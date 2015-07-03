@@ -400,7 +400,11 @@ class ".$className." extends Migration\n".
      */
     public function morphTable($tableName, $definition)
     {
-        if (isset(self::$_databaseConfig->dbname)) {
+        if (isset(self::$_databaseConfig->schema)) {
+            $defaultSchema = self::$_databaseConfig->schema;
+        } elseif (isset(self::$_databaseConfig->adapter) && self::$_databaseConfig->adapter == 'Postgresql') {
+            $defaultSchema =  'public';
+        } elseif (isset(self::$_databaseConfig->dbname)) {
             $defaultSchema = self::$_databaseConfig->dbname;
         } else {
             $defaultSchema = null;
